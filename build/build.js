@@ -6,7 +6,7 @@ import {
     updateBottom,
     updateHead,
     updateMiddle,
-    updateChatchphrases
+    updateCatchphrases
 } from '../fetch-utils.js';
 
 checkAuth();
@@ -18,7 +18,7 @@ const headEl = document.getElementById('head');
 const middleEl = document.getElementById('middle');
 const bottomEl = document.getElementById('bottom');
 const reportEl = document.getElementById('report');
-const chatchphrasesEl = document.getElementById('chatchphrases');
+const catchphrasesEl = document.getElementById('chatchphrases');
 const catchphraseInput = document.getElementById('catchphrase-input');
 const catchphraseButton = document.getElementById('catchphrase-button');
 const logoutButton = document.getElementById('logout');
@@ -30,7 +30,7 @@ let bottomCount = 0;
 
 headDropdown.addEventListener('change', async() => {
     // increment the correct count in state
-
+    headCount++;
     // update the head in supabase with the correct data
     refreshData();
 });
@@ -38,7 +38,7 @@ headDropdown.addEventListener('change', async() => {
 
 middleDropdown.addEventListener('change', async() => {
     // increment the correct count in state
-    
+    middleCount++;
     // update the middle in supabase with the correct data
     refreshData();
 });
@@ -46,8 +46,12 @@ middleDropdown.addEventListener('change', async() => {
 
 bottomDropdown.addEventListener('change', async() => {
     // increment the correct count in state
-    
+    bottomCount++;
     // update the bottom in supabase with the correct data
+    const bottomValue = bottomDropdown.value;
+
+    await updateBottom(bottomValue);
+
     refreshData();
 });
 
@@ -86,12 +90,17 @@ function displayStats() {
 
 async function fetchAndDisplayCharacter() {
     // fetch the caracter from supabase
-
+    const character = await getCharacter();
     // if the character has a head, display the head in the dom
+    if (character.head) headEl.style.backgroundImage = `url(../assets/${character.head}-head.png)`;
+
     // if the character has a middle, display the middle in the dom
+    if (character.middle) middleEl.style.backgroundImage = `url(../assets/${character.middle}-middle.png)`;
     // if the character has a pants, display the pants in the dom
+    if (character.bottom) bottomEl.style.backgroundImage = `url(../assets/${character.bottom}-bottom.png)`;
     
     // loop through catchphrases and display them to the dom (clearing out old dom if necessary)
+
 }
 
 function refreshData() {
