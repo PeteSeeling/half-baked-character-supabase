@@ -8,6 +8,7 @@ export async function createCharacter(character){
     // use the character to create a single new character for this user in supabase
         .from('characters')
         .insert([{ ...character, user_id: client.auth.user().id }]);
+      
 
 
     return checkError(response);
@@ -65,7 +66,8 @@ export async function updateCatchphrases(value){
     const currentUserId = client.auth.user().id;
 
     // in supabase, update the catchphrases property
-    const response = await client.from('characters')
+    const response = await client
+        .from('characters')
         .update({ catchphrases: value })
         .match({ user_id: currentUserId })
         .single();
